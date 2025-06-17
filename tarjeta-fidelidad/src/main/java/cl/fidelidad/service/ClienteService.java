@@ -16,17 +16,28 @@ public class ClienteService {
     }
 
     public void agregarCliente(Cliente cliente) {
+        if (cliente == null) {
+            throw new IllegalArgumentException("Cliente no puede ser null");
+        }
         if (!correoValido(cliente.getCorreo())) {
             throw new IllegalArgumentException("Correo inválido");
         }
-        if (clienteRepo.buscarPorCorreo(cliente.getCorreo()).isPresent()) {
+        Optional<Cliente> existente = clienteRepo.buscarPorCorreo(cliente.getCorreo());
+        if (existente.isPresent()) {
             throw new IllegalArgumentException("Correo ya registrado");
         }
         clienteRepo.agregar(cliente);
     }
 
     public Cliente obtenerCliente(String id) {
-        return clienteRepo.obtener(id);
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID de cliente inválido");
+        }
+        Cliente cliente = clienteRepo.obtener(id);
+        if (cliente == null) {
+            throw new IllegalArgumentException("Cliente no encontrado");
+        }
+        return cliente;
     }
 
     public List<Cliente> listarClientes() {
@@ -34,10 +45,16 @@ public class ClienteService {
     }
 
     public void eliminarCliente(String id) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID de cliente inválido");
+        }
         clienteRepo.eliminar(id);
     }
 
     public void actualizarCliente(Cliente cliente) {
+        if (cliente == null) {
+            throw new IllegalArgumentException("Cliente no puede ser null");
+        }
         if (!correoValido(cliente.getCorreo())) {
             throw new IllegalArgumentException("Correo inválido");
         }
@@ -46,12 +63,15 @@ public class ClienteService {
 
     /** Actualiza el nivel según puntos actuales */
     public void actualizarNivel(Cliente cliente) {
+        if (cliente == null) {
+            throw new IllegalArgumentException("Cliente no puede ser null");
+        }
         NivelFidelidad nuevoNivel = NivelFidelidad.obtenerNivel(cliente.getPuntos());
         cliente.setNivel(nuevoNivel);
         clienteRepo.actualizar(cliente);
     }
 
     private boolean correoValido(String correo) {
-        return correo != null && correo.contains("@");
+        return correo != null && correo.contains("@") && correo.indexOf("@") != 0 && correo.indexOf("@") != correo.length() - 1;
     }
 }

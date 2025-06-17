@@ -28,13 +28,16 @@ public enum NivelFidelidad {
         return multiplicador;
     }
 
-    // Método para determinar el nivel según puntos
+    // Método para determinar el nivel según puntos (asume orden ascendente)
     public static NivelFidelidad obtenerNivel(int puntos) {
+        NivelFidelidad nivelActual = BRONCE;
         for (NivelFidelidad nivel : values()) {
-            if (puntos >= nivel.min && puntos <= nivel.max) {
-                return nivel;
+            if (puntos >= nivel.min) {
+                nivelActual = nivel;
+            } else {
+                break; // Como están ordenados, ya no hay que seguir
             }
         }
-        return BRONCE; // fallback por defecto
+        return nivelActual;
     }
 }
