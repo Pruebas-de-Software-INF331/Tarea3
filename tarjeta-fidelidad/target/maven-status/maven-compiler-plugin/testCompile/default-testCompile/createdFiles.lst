@@ -1,0 +1,4 @@
+cl/fidelidad/repository/ClienteRepositoryTest.class
+cl/fidelidad/service/FidelidadServiceTest.class
+cl/fidelidad/model/NivelFidelidadTest.class
+cl/fidelidad/repository/CompraRepositoryTest.class

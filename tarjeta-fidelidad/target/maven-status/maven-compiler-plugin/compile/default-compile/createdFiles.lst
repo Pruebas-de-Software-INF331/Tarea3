@@ -1,0 +1,9 @@
+cl/fidelidad/Main.class
+cl/fidelidad/service/ClienteService.class
+cl/fidelidad/service/FidelidadService.class
+cl/fidelidad/model/Cliente.class
+cl/fidelidad/model/Compra.class
+cl/fidelidad/repository/CompraRepository.class
+cl/fidelidad/model/NivelFidelidad.class
+cl/fidelidad/service/CompraService.class
+cl/fidelidad/repository/ClienteRepository.class
