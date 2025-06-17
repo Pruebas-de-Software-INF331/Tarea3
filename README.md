@@ -17,10 +17,10 @@ Este proyecto implementa un sistema de fidelización de clientes donde los usuar
 
 ## Estructura del Proyecto
 src/
-├── cl.fidelidad.model/ # Modelos: Cliente, Compra, NivelFidelidad
-├── cl.fidelidad.repository/ # Repositorios en memoria para Cliente y Compra
-├── cl.fidelidad.service/ # Servicios ClienteService y FidelidadService
-└── test/ # Pruebas JUnit
+- cl.fidelidad.model/ # Modelos: Cliente, Compra, NivelFidelidad
+- cl.fidelidad.repository/ # Repositorios en memoria para Cliente y Compra
+- cl.fidelidad.service/ # Servicios ClienteService y FidelidadService
+- test/ # Pruebas JUnit
 
 ## Requisitos
 
