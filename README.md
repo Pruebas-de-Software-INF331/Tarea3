@@ -47,6 +47,35 @@ Las pruebas están implementadas usando JUnit. Algunos de los casos testeados in
 
 - Validación de excepción si el cliente no existe al registrar una compra.
 
-## Autor
+## Enfoque de Desarrollo (TDD)
 
-- Valentina Lepín 201904113-4
+Durante el desarrollo de este proyecto, se siguió un enfoque TDD para asegurar la calidad desde el inicio. Cada nueva funcionalidad (como el registro de compras o el cálculo de puntos) fue acompañada por una prueba unitaria previa, usando JUnit 5.
+
+Esto permitió verificar que el comportamiento deseado estuviera bien definido antes de codificar, y facilitó la detección temprana de errores.
+
+Las clases con pruebas incluyen:
+
+- `FidelidadServiceTest`
+- `ClienteServiceTest`
+
+## Licencia
+
+[Licencia](https://github.com/Pruebas-de-Software-INF331/Tarea3/blob/master/LICENSE.txt)
+
+## ¿Qué tipo de cobertura he medido?
+
+Se implementó la herramienta JaCoCo (Java Code Coverage), que genera reportes automáticos tras ejecutar las pruebas unitarias en el proyecto.
+
+El tipo principal de cobertura medida fue:
+
+- Cobertura de instrucciones: porcentaje de líneas de código ejecutadas durante las pruebas.
+
+- Cobertura de métodos: qué métodos fueron invocados al menos una vez por las pruebas.
+
+- Cobertura de clases: qué clases del sistema fueron ejercitadas por las pruebas.
+
+- Cobertura de ramas (opcional, si se activó): analiza decisiones if/else, switch, etc., y verifica si se recorrieron todas las rutas lógicas.
+
+## ¿Por qué?
+
+Porque medir cobertura permite evaluar la efectividad de las pruebas unitarias, identificar partes del código que no están siendo testeadas y mejorar la calidad del software. Además, es un requisito de la entrega que valida que se siguió un enfoque de desarrollo basado en pruebas (TDD).
