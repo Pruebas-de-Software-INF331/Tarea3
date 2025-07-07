@@ -1,42 +1,94 @@
 # Sistema de Fidelidad de Clientes
 
-Este proyecto implementa un sistema de fidelización de clientes donde los usuarios acumulan puntos por cada compra realizada. Según sus puntos acumulados, el cliente pertenece a un nivel de fidelidad que define un multiplicador para futuras compras. Además, se otorgan bonificaciones por compras consecutivas o múltiples compras en un mismo día.
+Este proyecto implementa un sistema de fidelización de clientes, donde los usuarios acumulan puntos por cada compra registrada. Según su cantidad de puntos, cada cliente pertenece a un **nivel de fidelidad** que otorga **multiplicadores de puntos** en futuras compras. Además, se premia la **frecuencia y recurrencia** mediante bonificaciones.
+
+---
 
 ## Características
 
-- Registro y gestión de clientes.
-- Registro de compras asociadas a un cliente y fecha.
-- Asignación de puntos por compras según el nivel del cliente.
-- Bonificación por 3 o más compras en el mismo día (+10 puntos).
-- Actualización automática de nivel de fidelidad:
-  - **Bronce**: 0–499 puntos (multiplicador 1.0)
-  - **Plata**: 500–1499 puntos (multiplicador 1.2)
-  - **Oro**: 1500–2999 puntos (multiplicador 1.5)
-  - **Platino**: 3000+ puntos (multiplicador 2.0)
-- Seguimiento de racha de compras consecutivas (streak).
+- Registro, actualización y eliminación de clientes.
+- Registro de compras con ID, cliente y fecha.
+- Asignación de puntos base por compras (1 punto cada $100, redondeo hacia abajo).
+- Multiplicadores según nivel:
+  - Bronce: ×1.0 (0–499 pts)
+  - Plata: ×1.2 (500–1499 pts)
+  - Oro: ×1.5 (1500–2999 pts)
+  - Platino: ×2.0 (3000+ pts)
+- Bonificación de +10 pts por 3 o más compras en el mismo día.
+- Racha de compras consecutivas (streak).
+- Recalculo automático del nivel tras cada compra.
 
-## Estructura del Proyecto
+---
+
+## Diseño
+
+El sistema está diseñado siguiendo una arquitectura **orientada a objetos**, con separación clara entre:
+
+- **Modelos** (`Cliente`, `Compra`, `NivelFidelidad`)
+- **Repositorios** en memoria (`ClienteRepository`, `CompraRepository`)
+- **Servicios** de lógica de negocio (`FidelidadService`, `ClienteService`)
+
+## Estructura
+```
 src/
-- cl.fidelidad.model/ # Modelos: Cliente, Compra, NivelFidelidad
-- cl.fidelidad.repository/ # Repositorios en memoria para Cliente y Compra
-- cl.fidelidad.service/ # Servicios ClienteService y FidelidadService
-- test/ # Pruebas JUnit
+├── cl.fidelidad.model        # Modelos de dominio
+├── cl.fidelidad.repository   # Repositorios en memoria
+├── cl.fidelidad.service      # Lógica del sistema
+├── cl.fidelidad              # Clase Main (opcional)
+└── test/                     # Pruebas JUnit 5
+
+```
 
 ## Requisitos
 
 - Java 11 o superior
-- Maven 3.6+
-- JUnit 5 para pruebas
 
-## Cómo Ejecutar
+- Maven 3.6+
+
+- JUnit 5 (para pruebas unitarias)
+
+- JaCoCo (para cobertura de pruebas)
+
+## Cómo compilar, ejecutar y probar
+
+Desde la raíz del proyecto:
 
 ```
-mvn clean install
+# Compilar y verificar el proyecto
+mvn clean verify
 
+# Ejecutar pruebas
 mvn test
 ```
 
-## Pruebas
+Esto generará también un reporte de cobertura con JaCoCo en:
+
+```
+target/site/jacoco/index.html
+
+```
+Puedes abrir ese archivo con tu navegador para ver el detalle visual.
+
+## Ejemplo de salida de pruebas (JUnit + Maven)
+
+```
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running cl.fidelidad.service.FidelidadServiceTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+
+Running cl.fidelidad.model.NivelFidelidadTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+
+...
+
+Results:
+Tests run: 30, Failures: 0, Errors: 0, Skipped: 0
+
+```
+
+## DEtalle de las Pruebas
 Las pruebas están implementadas usando JUnit. Algunos de los casos testeados incluyen:
 
 - Registro correcto de clientes y validación de correos.
@@ -47,35 +99,39 @@ Las pruebas están implementadas usando JUnit. Algunos de los casos testeados in
 
 - Validación de excepción si el cliente no existe al registrar una compra.
 
-## Enfoque de Desarrollo (TDD)
+## ¿Qué tipo de cobertura he medido y por qué?
 
-Durante el desarrollo de este proyecto, se siguió un enfoque TDD para asegurar la calidad desde el inicio. Cada nueva funcionalidad (como el registro de compras o el cálculo de puntos) fue acompañada por una prueba unitaria previa, usando JUnit 5.
+Este proyecto mide cobertura de pruebas mediante JaCoCo, herramienta integrada a través de Maven.
 
-Esto permitió verificar que el comportamiento deseado estuviera bien definido antes de codificar, y facilitó la detección temprana de errores.
+Se analizaron los siguientes tipos de cobertura:
 
-Las clases con pruebas incluyen:
+- Cobertura de instrucciones: % de líneas ejecutadas por las pruebas.
 
-- `FidelidadServiceTest`
-- `ClienteServiceTest`
+- Cobertura de métodos: métodos invocados al menos una vez.
 
+- Cobertura de clases: clases alcanzadas por las pruebas.
+
+### ¿Por qué?
+
+Medir cobertura permite:
+
+- Verificar qué tanto del código ha sido probado.
+
+- Detectar partes del sistema que podrían estar sin validar.
+
+- Asegurar un desarrollo guiado por pruebas (TDD).
+
+- Satisfacer criterios de calidad y entrega del curso.
+- 
 ## Licencia
+Este proyecto se distribuye bajo los términos de la licencia:
 
-[Licencia](https://github.com/Pruebas-de-Software-INF331/Tarea3/blob/master/LICENSE.txt)
+[Ver LICENSE](https://github.com/Pruebas-de-Software-INF331/Tarea3/blob/master/LICENSE.txt)
 
-## ¿Qué tipo de cobertura he medido?
+## Consideraciones adicionales
 
-Se implementó la herramienta JaCoCo (Java Code Coverage), que genera reportes automáticos tras ejecutar las pruebas unitarias en el proyecto.
+- Se siguió un enfoque de desarrollo TDD (Test Driven Development).
 
-El tipo principal de cobertura medida fue:
+- Se priorizó la separación de responsabilidades: datos (modelo), persistencia (repositorio) y lógica (servicio).
 
-- Cobertura de instrucciones: porcentaje de líneas de código ejecutadas durante las pruebas.
-
-- Cobertura de métodos: qué métodos fueron invocados al menos una vez por las pruebas.
-
-- Cobertura de clases: qué clases del sistema fueron ejercitadas por las pruebas.
-
-- Cobertura de ramas (opcional, si se activó): analiza decisiones if/else, switch, etc., y verifica si se recorrieron todas las rutas lógicas.
-
-## ¿Por qué?
-
-Porque medir cobertura permite evaluar la efectividad de las pruebas unitarias, identificar partes del código que no están siendo testeadas y mejorar la calidad del software. Además, es un requisito de la entrega que valida que se siguió un enfoque de desarrollo basado en pruebas (TDD).
+- Las pruebas cubren tanto escenarios exitosos como casos de error (por ejemplo, cliente no existente).
