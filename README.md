@@ -134,7 +134,7 @@ Medir cobertura permite:
 - Asegurar un desarrollo guiado por pruebas (TDD).
 
 - Satisfacer criterios de calidad y entrega del curso.
-- 
+
 ## Licencia
 Este proyecto se distribuye bajo los términos de la licencia:
 
