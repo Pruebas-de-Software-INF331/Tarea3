@@ -31,12 +31,21 @@ El sistema está diseñado siguiendo una arquitectura **orientada a objetos**, c
 ## Estructura
 ```
 src/
-├── cl.fidelidad.model        # Modelos de dominio
-├── cl.fidelidad.repository   # Repositorios en memoria
-├── cl.fidelidad.service      # Lógica del sistema
-├── cl.fidelidad              # Clase Main (opcional)
-└── test/                     # Pruebas JUnit 5
-
+├── main/
+│   └── java/
+│       └── cl/
+│           └── fidelidad/
+│               ├── model/        # Modelos de dominio (Cliente, Compra, NivelFidelidad)
+│               ├── repository/   # Repositorios en memoria
+│               ├── service/      # Lógica del sistema
+│               └── Main.java     # Clase Main (opcional)
+└── test/
+    └── java/
+        └── cl/
+            └── fidelidad/
+                ├── model/
+                ├── repository/
+                └── service/
 ```
 
 ## Requisitos
@@ -51,11 +60,14 @@ src/
 
 ## Cómo compilar, ejecutar y probar
 
-Desde la raíz del proyecto:
+Desde la raíz del proyecto (`/tarjeta-fidelidad`):
 
 ```
 # Compilar y verificar el proyecto
 mvn clean verify
+
+# Ejecutar main
+mvn exec:java
 
 # Ejecutar pruebas
 mvn test
@@ -105,7 +117,7 @@ Este proyecto mide cobertura de pruebas mediante JaCoCo, herramienta integrada a
 
 Se analizaron los siguientes tipos de cobertura:
 
-- Cobertura de instrucciones: % de líneas ejecutadas por las pruebas.
+- Cobertura de instrucciones: porcentaje de líneas ejecutadas por las pruebas.
 
 - Cobertura de métodos: métodos invocados al menos una vez.
 
