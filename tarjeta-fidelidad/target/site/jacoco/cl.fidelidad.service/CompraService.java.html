@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CompraService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tarjeta-fidelidad</a> &gt; <a href="index.source.html" class="el_package">cl.fidelidad.service</a> &gt; <span class="el_source">CompraService.java</span></div><h1>CompraService.java</h1><pre class="source lang-java linenums">package cl.fidelidad.service;
+
+import cl.fidelidad.model.Cliente;
+import cl.fidelidad.model.Compra;
+import cl.fidelidad.repository.CompraRepository;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public class CompraService {
+
+    private final CompraRepository compraRepo;
+    private final ClienteService clienteService;
+
+<span class="nc" id="L15">    public CompraService(CompraRepository compraRepo, ClienteService clienteService) {</span>
+<span class="nc" id="L16">        this.compraRepo = compraRepo;</span>
+<span class="nc" id="L17">        this.clienteService = clienteService;</span>
+<span class="nc" id="L18">    }</span>
+
+    public void registrarCompra(Compra compra) {
+<span class="nc" id="L21">        Cliente cliente = clienteService.obtenerCliente(compra.getIdCliente());</span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">        if (cliente == null) {</span>
+<span class="nc" id="L23">            throw new IllegalArgumentException(&quot;Cliente no encontrado&quot;);</span>
+        }
+
+<span class="nc" id="L26">        LocalDate fechaCompra = compra.getFecha();</span>
+<span class="nc" id="L27">        List&lt;Compra&gt; comprasHoy = compraRepo.obtenerPorFechaYCliente(cliente.getId(), fechaCompra);</span>
+
+        // Puntos base: 1 punto por cada $100 (parte entera)
+<span class="nc" id="L30">        int puntosBase = (int) (compra.getMonto() / 100);</span>
+
+        // Aplicar multiplicador por nivel
+<span class="nc" id="L33">        double multiplicador = cliente.getNivel().getMultiplicador();</span>
+<span class="nc" id="L34">        int puntosConMultiplicador = (int) Math.floor(puntosBase * multiplicador);</span>
+
+        // Bono por 3 compras consecutivas en el mismo día
+<span class="nc" id="L37">        int bono = 0;</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (comprasHoy.size() &gt;= 2) { // Compra actual no incluida aún</span>
+<span class="nc" id="L39">            bono = 10;</span>
+<span class="nc" id="L40">            cliente.setStreakDias(cliente.getStreakDias() + 1);</span>
+        } else {
+<span class="nc" id="L42">            cliente.setStreakDias(1);</span>
+        }
+
+<span class="nc" id="L45">        int totalPuntos = puntosConMultiplicador + bono;</span>
+
+        // Actualizar puntos
+<span class="nc" id="L48">        cliente.setPuntos(cliente.getPuntos() + totalPuntos);</span>
+
+        // Guardar compra
+<span class="nc" id="L51">        compraRepo.agregar(compra);</span>
+
+        // Actualizar nivel
+<span class="nc" id="L54">        clienteService.actualizarNivel(cliente);</span>
+<span class="nc" id="L55">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

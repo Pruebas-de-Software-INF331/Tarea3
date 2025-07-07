@@ -24,10 +24,13 @@ public class Main {
             String opcion = scanner.nextLine().trim();
 
             switch (opcion) {
-                case "1" -> agregarCliente();
+                case "1" -> mostrarPuntosYNivel();
                 case "2" -> registrarCompra();
-                case "3" -> mostrarPuntosYNivel();
-                case "4" -> {
+                case "3" -> agregarCliente();
+                case "4" -> listarClientes();
+                case "5" -> eliminarCliente();
+                case "6" -> verHistorialDeCompras();
+                case "7" -> {
                     continuar = false;
                     System.out.println("¡Hasta luego!");
                 }
@@ -38,10 +41,13 @@ public class Main {
 
     private static void mostrarMenu() {
         System.out.println("\n--- Menú Principal ---");
-        System.out.println("1. Agregar cliente");
+        System.out.println("1. Mostrar puntos y nivel de cliente");
         System.out.println("2. Registrar compra");
-        System.out.println("3. Mostrar puntos y nivel de cliente");
-        System.out.println("4. Salir");
+        System.out.println("3. Agregar cliente");
+        System.out.println("4. Listar clientes");
+        System.out.println("5. Eliminar cliente");
+        System.out.println("6. Ver historial de compras");
+        System.out.println("7. Salir");
         System.out.print("Seleccione una opción: ");
     }
 
@@ -125,4 +131,42 @@ public class Main {
         System.out.println("Nivel: " + c.getNivel());
         System.out.println("Streak días: " + c.getStreakDias());
     }
+
+    private static void listarClientes() {
+    var lista = fidelidadService.listarClientes();
+    if (lista.isEmpty()) {
+        System.out.println("No hay clientes registrados.");
+    } else {
+        System.out.println("--- Clientes ---");
+        for (Cliente c : lista) {
+            System.out.println(c.getId() + " - " + c.getNombre() + " - " + c.getCorreo());
+        }
+    }
+    }
+
+    private static void eliminarCliente() {
+        System.out.print("ID del cliente a eliminar: ");
+        String id = scanner.nextLine().trim();
+        Cliente c = clienteRepo.obtener(id);
+        if (c == null) {
+            System.out.println("Cliente no encontrado.");
+            return;
+        }
+        fidelidadService.eliminarCliente(id);
+        System.out.println("Cliente eliminado.");
+    }
+
+    private static void verHistorialDeCompras() {
+    System.out.print("ID del cliente: ");
+    String id = scanner.nextLine().trim();
+    var historial = fidelidadService.obtenerHistorialCompras(id);
+    if (historial.isEmpty()) {
+        System.out.println("Este cliente no tiene compras registradas.");
+    } else {
+        System.out.println("--- Historial de Compras ---");
+        historial.forEach(compra -> System.out.println(
+            compra.getFecha() + " - $" + compra.getMonto() + " - ID: " + compra.getIdCompra()
+        ));
+    }
+}
 }

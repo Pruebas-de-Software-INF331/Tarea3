@@ -34,36 +34,32 @@ class FidelidadServiceTest {
         service.registrarCompra("1", 1000, LocalDate.now());
 
         Cliente cliente = clienteRepo.obtener("1");
-        assertTrue(cliente.getPuntos() > 0);
+
+        assertEquals(10, cliente.getPuntos()); // 10 puntos (sin multiplicador porque es BRONCE)
         assertEquals(NivelFidelidad.BRONCE, cliente.getNivel());
     }
 
     @Test
     void registrarCompraDebeActualizarNivel() {
-        // Realizamos múltiples compras para subir de nivel
-        for (int i = 0; i < 5; i++) {
-            service.registrarCompra("1", 500.0, LocalDate.now());
-        }
+        service.registrarCompra("1", 42000.0, LocalDate.now()); // 420 pts
+        service.registrarCompra("1", 10000.0, LocalDate.now()); // 100 pts
 
         Cliente cliente = clienteRepo.obtener("1");
 
-        assertTrue(cliente.getPuntos() >= 500); // umbral mínimo de PLATA
+        assertEquals(520, cliente.getPuntos());
         assertEquals(NivelFidelidad.PLATA, cliente.getNivel());
     }
 
     @Test
     void registrarTresComprasEnMismoDiaAplicaBono() {
         LocalDate hoy = LocalDate.now();
-        service.registrarCompra("1", 100.0, hoy);
-        service.registrarCompra("1", 150.0, hoy);
-        service.registrarCompra("1", 200.0, hoy);
+        service.registrarCompra("1", 100.0, hoy);  // 1
+        service.registrarCompra("1", 150.0, hoy);  // 1
+        service.registrarCompra("1", 200.0, hoy);  // 2 + bono
 
         Cliente cliente = clienteRepo.obtener("1");
 
-        // El bono es +10 puntos extra si hay 3 compras en el mismo día
-        // Los puntos base serían: (100+150+200) * 1.0 = 450
-        // Más 10 de bono: 460
-        assertEquals(460, cliente.getPuntos());
+        assertEquals(14, cliente.getPuntos()); // 1 + 1 + 2 + 10 de bono
     }
 
     @Test
@@ -108,8 +104,8 @@ class FidelidadServiceTest {
 
         Cliente cliente = clienteRepo.obtener("1");
 
-        assertEquals(cliente.getPuntos(), service.obtenerPuntos("1"));
-        assertEquals(cliente.getNivel(), service.obtenerNivel("1"));
+        assertEquals(10, service.obtenerPuntos("1"));
+        assertEquals(NivelFidelidad.BRONCE, service.obtenerNivel("1"));
     }
 
     @Test

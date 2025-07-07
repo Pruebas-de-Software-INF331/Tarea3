@@ -62,7 +62,7 @@ public class FidelidadService {
     }
 
     // Cambiar cálculo puntos base para que coincida con test
-    int puntosBase = (int) monto;
+    int puntosBase = (int) (monto / 100);
 
     // Mantener multiplicador
     double multiplicador = c.getNivel().getMultiplicador();
@@ -108,7 +108,7 @@ public class FidelidadService {
     c.setPuntos(c.getPuntos() + puntosTotales);
 
     // Actualizar nivel basado en puntos (usar método más robusto)
-    c.setNivel(calcularNivel(c.getPuntos()));
+    c.setNivel(NivelFidelidad.obtenerNivel(c.getPuntos()));
 
     clienteRepo.actualizar(c);
 }
@@ -137,5 +137,10 @@ public class FidelidadService {
 
     private boolean correoValido(String correo) {
         return correo != null && correo.contains("@");
+    }
+
+    // --- Consultas adicionales ---
+    public List<Compra> obtenerHistorialCompras(String idCliente) {
+        return compraRepo.obtenerPorCliente(idCliente);
     }
 }

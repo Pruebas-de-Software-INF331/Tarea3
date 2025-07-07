@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NivelFidelidad.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tarjeta-fidelidad</a> &gt; <a href="index.source.html" class="el_package">cl.fidelidad.model</a> &gt; <span class="el_source">NivelFidelidad.java</span></div><h1>NivelFidelidad.java</h1><pre class="source lang-java linenums">package cl.fidelidad.model;
+
+<span class="fc" id="L3">public enum NivelFidelidad {</span>
+<span class="fc" id="L4">    BRONCE(0, 499, 1.0),</span>
+<span class="fc" id="L5">    PLATA(500, 1499, 1.2),</span>
+<span class="fc" id="L6">    ORO(1500, 2999, 1.5),</span>
+<span class="fc" id="L7">    PLATINO(3000, Integer.MAX_VALUE, 2.0);</span>
+
+    private final int min;
+    private final int max;
+    private final double multiplicador;
+
+<span class="fc" id="L13">    NivelFidelidad(int min, int max, double multiplicador) {</span>
+<span class="fc" id="L14">        this.min = min;</span>
+<span class="fc" id="L15">        this.max = max;</span>
+<span class="fc" id="L16">        this.multiplicador = multiplicador;</span>
+<span class="fc" id="L17">    }</span>
+
+    public int getMin() {
+<span class="nc" id="L20">        return min;</span>
+    }
+
+    public int getMax() {
+<span class="nc" id="L24">        return max;</span>
+    }
+
+    public double getMultiplicador() {
+<span class="fc" id="L28">        return multiplicador;</span>
+    }
+
+    // Método para determinar el nivel según puntos (asume orden ascendente)
+    public static NivelFidelidad obtenerNivel(int puntos) {
+<span class="fc" id="L33">        NivelFidelidad nivelActual = BRONCE;</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        for (NivelFidelidad nivel : values()) {</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">            if (puntos &gt;= nivel.min) {</span>
+<span class="fc" id="L36">                nivelActual = nivel;</span>
+            } else {
+                break; // Como están ordenados, ya no hay que seguir
+            }
+        }
+<span class="fc" id="L41">        return nivelActual;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
