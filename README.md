@@ -100,7 +100,7 @@ Tests run: 30, Failures: 0, Errors: 0, Skipped: 0
 
 ```
 
-## DEtalle de las Pruebas
+## Detalle de las Pruebas
 Las pruebas están implementadas usando JUnit. Algunos de los casos testeados incluyen:
 
 - Registro correcto de clientes y validación de correos.
