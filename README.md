@@ -87,24 +87,16 @@ Puedes abrir ese archivo con tu navegador para ver el detalle visual.
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running cl.fidelidad.model.NivelFidelidadTest
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.114 s - in cl.fidelidad.model.NivelFidelidadTest
-Running cl.fidelidad.repository.ClienteRepositoryTest
-Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s - in cl.fidelidad.repository.ClienteRepositoryTest
-Running cl.fidelidad.repository.CompraRepositoryTest
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s - in cl.fidelidad.repository.CompraRepositoryTest
 Running cl.fidelidad.service.FidelidadServiceTest
-Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.045 s - in cl.fidelidad.service.FidelidadServiceTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+
+Running cl.fidelidad.model.NivelFidelidadTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+
+...
 
 Results:
-
-Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
-
-------------------------------------------------------------------------
-BUILD SUCCESS
-------------------------------------------------------------------------
-Total time:  2.501 s
-Finished at: 2025-07-08T15:14:10-04:00
+Tests run: 30, Failures: 0, Errors: 0, Skipped: 0
 
 ```
 
