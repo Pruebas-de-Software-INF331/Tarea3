@@ -48,15 +48,19 @@ src/
                 └── service/
 ```
 
-## Requisitos
+## Requisitos técnicos
 
-- Java 11 o superior
-
-- Maven 3.6+
-
-- JUnit 5 (para pruebas unitarias)
-
-- JaCoCo (para cobertura de pruebas)
+| Ítem | Detalle |
+|------|---------|
+| tipo App | Por consola |
+| Lenguaje | Java 21+ |
+| Build | Maven / Gradle (documentar en README) (Ver videos de uso JUnit)|
+| Pruebas | JUnit 5 + assertions estándar |
+| Persistencia | En memoria |
+| Estilo | Diseño OO limpio (entidades, repositorios, proyecto en general ) |
+| Medir Cobertura | Usar EclEmma (JaCoCo) o SnarQube |
+| TDD | Se sugiere uso de TDD |
+| Modalidad | Trabajo individual|
 
 ## Cómo compilar, ejecutar y probar
 
