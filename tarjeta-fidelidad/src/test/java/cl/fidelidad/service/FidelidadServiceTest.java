@@ -115,4 +115,22 @@ class FidelidadServiceTest {
         );
         assertTrue(ex.getMessage().contains("Cliente no existe"));
     }
+
+    @Test
+    void compraSeGuardaEnRepositorio() {
+        service.registrarCompra("1", 500.0, LocalDate.now());
+        var compras = compraRepo.obtenerPorCliente("1");
+
+        assertEquals(1, compras.size());
+        assertEquals(5, compras.get(0).getPuntosGanados()); // 500 * 1.0 / 100
+    }
+
+    @Test
+    void clienteNuevoEmpiezaConCeroPuntosYStreak() {
+        Cliente c = clienteRepo.obtener("1");
+        assertEquals(0, c.getPuntos());
+        assertEquals(0, c.getStreakDias());
+        assertEquals(NivelFidelidad.BRONCE, c.getNivel());
+    }
+
 }

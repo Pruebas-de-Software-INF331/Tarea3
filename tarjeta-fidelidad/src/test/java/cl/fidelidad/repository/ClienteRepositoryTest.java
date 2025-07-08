@@ -98,4 +98,16 @@ class ClienteRepositoryTest {
         assertTrue(repo.existe("9"));
         assertFalse(repo.existe("999"));
     }
+
+    @Test
+    void agregarClienteConIdDuplicadoSobrescribe() {
+        Cliente c1 = new Cliente("10", "Nombre1", "n1@mail.com");
+        Cliente c2 = new Cliente("10", "Nombre2", "n2@mail.com"); // mismo ID
+
+        repo.agregar(c1);
+        repo.agregar(c2); // debería sobrescribir
+
+        Cliente resultado = repo.obtener("10");
+        assertEquals("Nombre2", resultado.getNombre());
+    }
 }

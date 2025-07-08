@@ -55,64 +55,60 @@ public class FidelidadService {
 
     // --- Registro de Compras ---
     public void registrarCompra(String idCliente, double monto, LocalDate fecha) {
-    Cliente c = clienteRepo.obtener(idCliente);
+        Cliente c = clienteRepo.obtener(idCliente);
 
-    if (c == null) {
-        throw new IllegalArgumentException("Cliente no existe");
-    }
+        if (c == null) {
+            throw new IllegalArgumentException("Cliente no existe");
+        }
 
-    // Cambiar cálculo puntos base para que coincida con test
-    int puntosBase = (int) (monto / 100);
+        // Cálculo puntos base
+        int puntosBase = (int) (monto / 100);
 
-    // Mantener multiplicador
-    double multiplicador = c.getNivel().getMultiplicador();
+        // Multiplicador según nivel
+        double multiplicador = c.getNivel().getMultiplicador();
 
-    // Calcular puntos totales
-    int puntosTotales = (int) (puntosBase * multiplicador);
+        // Calcular puntos totales iniciales
+        int puntosTotales = (int) (puntosBase * multiplicador);
 
-    // Obtener compras del día actual (incluyendo esta)
-    List<Compra> comprasHoy = compraRepo.obtenerPorFechaYCliente(idCliente, fecha);
+        // Obtener compras del día (sin incluir la actual)
+        List<Compra> comprasHoy = compraRepo.obtenerPorFechaYCliente(idCliente, fecha);
 
-    // Si la compra actual es la tercera o más en el día, aplicar bono
-    if (comprasHoy.size() >= 2) { // porque la compra actual aún no está agregada
-        puntosTotales += 10; // Cambié a 450 para que el total aprox llegue a 460, según test
-    }
+        // Bono por 3 o más compras en el día (esto suma 10 puntos)
+        if (comprasHoy.size() >= 2) { // 2 porque la compra actual aún no está agregada
+            puntosTotales += 10;
+        }
 
-    // Obtener la última fecha de compra (sin filtrar)
-    List<Compra> comprasPrevias = compraRepo.obtenerPorCliente(idCliente);
-    LocalDate ultimaFechaCompra = comprasPrevias.stream()
-            .map(Compra::getFecha)
-            .max(LocalDate::compareTo)
-            .orElse(null);
+        // Controlar streak de compras consecutivas
+        List<Compra> comprasPrevias = compraRepo.obtenerPorCliente(idCliente);
+        LocalDate ultimaFechaCompra = comprasPrevias.stream()
+                .map(Compra::getFecha)
+                .max(LocalDate::compareTo)
+                .orElse(null);
 
-    if (ultimaFechaCompra != null) {
-        if (fecha.isEqual(ultimaFechaCompra.plusDays(1))) {
-            // Día consecutivo: incrementar streak
-            c.setStreakDias(c.getStreakDias() + 1);
-        } else if (fecha.isEqual(ultimaFechaCompra)) {
-            // Misma fecha: no cambia streak
+        if (ultimaFechaCompra != null) {
+            if (fecha.isEqual(ultimaFechaCompra.plusDays(1))) {
+                c.setStreakDias(c.getStreakDias() + 1);
+            } else if (fecha.isEqual(ultimaFechaCompra)) {
+                // Mismo día, no cambia streak
+            } else {
+                c.setStreakDias(1);
+            }
         } else {
-            // No consecutivo ni igual: resetear streak
             c.setStreakDias(1);
         }
-    } else {
-        // Sin compras previas: iniciar streak en 1
-        c.setStreakDias(1);
+
+        // Crear compra pasando puntos ganados
+        Compra compra = new Compra(UUID.randomUUID().toString(), idCliente, monto, fecha, puntosTotales);
+
+        // Agregar compra a repositorio
+        compraRepo.agregar(compra);
+
+        // Actualizar puntos y nivel del cliente
+        c.setPuntos(c.getPuntos() + puntosTotales);
+        c.setNivel(NivelFidelidad.obtenerNivel(c.getPuntos()));
+
+        clienteRepo.actualizar(c);
     }
-
-    // Agregar compra recién creada
-    Compra compra = new Compra(UUID.randomUUID().toString(), idCliente, monto, fecha);
-    compraRepo.agregar(compra);
-
-    // Actualizar puntos acumulados
-    c.setPuntos(c.getPuntos() + puntosTotales);
-
-    // Actualizar nivel basado en puntos (usar método más robusto)
-    c.setNivel(NivelFidelidad.obtenerNivel(c.getPuntos()));
-
-    clienteRepo.actualizar(c);
-}
-
 
     // --- Consultas ---
     public int obtenerPuntos(String idCliente) {
@@ -126,15 +122,6 @@ public class FidelidadService {
     }
 
     // --- Utilidades ---
-    private NivelFidelidad calcularNivel(int puntos) {
-        for (NivelFidelidad nivel : NivelFidelidad.values()) {
-            if (puntos >= nivel.getMin() && puntos <= nivel.getMax()) {
-                return nivel;
-            }
-        }
-        return NivelFidelidad.BRONCE;
-    }
-
     private boolean correoValido(String correo) {
         return correo != null && correo.contains("@");
     }

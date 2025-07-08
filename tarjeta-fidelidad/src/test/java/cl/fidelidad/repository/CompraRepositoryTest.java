@@ -83,4 +83,10 @@ class CompraRepositoryTest {
 
         assertEquals(2, repo.listar().size());
     }
+
+    @Test
+    void obtenerPorClienteSinComprasDevuelveListaVacia() {
+        List<Compra> compras = repo.obtenerPorCliente("inexistente");
+        assertTrue(compras.isEmpty());
+    }
 }

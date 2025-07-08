@@ -7,40 +7,55 @@ public class Compra {
     private String idCliente;
     private double monto;
     private LocalDate fecha;
+    private int puntosGanados; 
 
-<span class="fc" id="L11">    public Compra(String idCompra, String idCliente, double monto, LocalDate fecha) {</span>
-<span class="fc" id="L12">        this.idCompra = idCompra;</span>
-<span class="fc" id="L13">        this.idCliente = idCliente;</span>
-<span class="fc" id="L14">        this.monto = monto;</span>
-<span class="fc" id="L15">        this.fecha = fecha;</span>
-<span class="fc" id="L16">    }</span>
+<span class="fc" id="L12">    public Compra(String idCompra, String idCliente, double monto, LocalDate fecha, int puntosGanados) {</span>
+<span class="fc" id="L13">        this.idCompra = idCompra;</span>
+<span class="fc" id="L14">        this.idCliente = idCliente;</span>
+<span class="fc" id="L15">        this.monto = monto;</span>
+<span class="fc" id="L16">        this.fecha = fecha;</span>
+<span class="fc" id="L17">        this.puntosGanados = puntosGanados;</span>
+<span class="fc" id="L18">    }</span>
+
+    // Constructor alternativo si aún usas el antiguo en algunos lados
+    public Compra(String idCompra, String idCliente, double monto, LocalDate fecha) {
+<span class="fc" id="L22">        this(idCompra, idCliente, monto, fecha, 0);</span>
+<span class="fc" id="L23">    }</span>
 
     // Getters
     public String getIdCompra() {
-<span class="fc" id="L20">        return idCompra;</span>
+<span class="fc" id="L27">        return idCompra;</span>
     }
 
     public String getIdCliente() {
-<span class="fc" id="L24">        return idCliente;</span>
+<span class="fc" id="L31">        return idCliente;</span>
     }
 
     public double getMonto() {
-<span class="nc" id="L28">        return monto;</span>
+<span class="nc" id="L35">        return monto;</span>
     }
 
     public LocalDate getFecha() {
-<span class="fc" id="L32">        return fecha;</span>
+<span class="fc" id="L39">        return fecha;</span>
+    }
+
+    public int getPuntosGanados() {
+<span class="fc" id="L43">        return puntosGanados;</span>
     }
 
     // Setters
     public void setMonto(double monto) {
-<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (monto &gt;= 0) {</span>
-<span class="nc" id="L38">            this.monto = monto;</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        if (monto &gt;= 0) {</span>
+<span class="nc" id="L49">            this.monto = monto;</span>
         }
-<span class="nc" id="L40">    }</span>
+<span class="nc" id="L51">    }</span>
 
     public void setFecha(LocalDate fecha) {
-<span class="nc" id="L43">        this.fecha = fecha;</span>
-<span class="nc" id="L44">    }</span>
+<span class="nc" id="L54">        this.fecha = fecha;</span>
+<span class="nc" id="L55">    }</span>
+
+    public void setPuntosGanados(int puntosGanados) {
+<span class="nc" id="L58">        this.puntosGanados = Math.max(0, puntosGanados);</span>
+<span class="nc" id="L59">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

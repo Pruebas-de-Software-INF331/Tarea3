@@ -20,17 +20,14 @@ public class Main {
 
         boolean continuar = true;
         while (continuar) {
-            mostrarMenu();
+            mostrarMenuPrincipal();
             String opcion = scanner.nextLine().trim();
 
             switch (opcion) {
-                case "1" -> mostrarPuntosYNivel();
-                case "2" -> registrarCompra();
-                case "3" -> agregarCliente();
-                case "4" -> listarClientes();
-                case "5" -> eliminarCliente();
-                case "6" -> verHistorialDeCompras();
-                case "7" -> {
+                case "1" -> menuGestionClientes();
+                case "2" -> menuGestionCompras();
+                case "3" -> mostrarPuntosYNivel();
+                case "4" -> {
                     continuar = false;
                     System.out.println("¡Hasta luego!");
                 }
@@ -39,17 +36,60 @@ public class Main {
         }
     }
 
-    private static void mostrarMenu() {
+    private static void mostrarMenuPrincipal() {
         System.out.println("\n--- Menú Principal ---");
-        System.out.println("1. Mostrar puntos y nivel de cliente");
-        System.out.println("2. Registrar compra");
-        System.out.println("3. Agregar cliente");
-        System.out.println("4. Listar clientes");
-        System.out.println("5. Eliminar cliente");
-        System.out.println("6. Ver historial de compras");
-        System.out.println("7. Salir");
+        System.out.println("1. Gestión de Clientes");
+        System.out.println("2. Gestión de Compras");
+        System.out.println("3. Mostrar Puntos / Nivel de un Cliente");
+        System.out.println("4. Salir");
         System.out.print("Seleccione una opción: ");
     }
+
+    // -------------------- Gestión de Clientes --------------------
+
+    private static void menuGestionClientes() {
+        boolean gestionando = true;
+        while (gestionando) {
+            System.out.println("\n--- Gestión de Clientes ---");
+            System.out.println("1. Agregar cliente");
+            System.out.println("2. Listar clientes");
+            System.out.println("3. Eliminar cliente");
+            System.out.println("4. Volver al menú principal");
+            System.out.print("Seleccione una opción: ");
+            String opcion = scanner.nextLine().trim();
+
+            switch (opcion) {
+                case "1" -> agregarCliente();
+                case "2" -> listarClientes();
+                case "3" -> eliminarCliente();
+                case "4" -> gestionando = false;
+                default -> System.out.println("Opción no válida.");
+            }
+        }
+    }
+
+    // -------------------- Gestión de Compras --------------------
+
+    private static void menuGestionCompras() {
+        boolean gestionando = true;
+        while (gestionando) {
+            System.out.println("\n--- Gestión de Compras ---");
+            System.out.println("1. Registrar compra");
+            System.out.println("2. Ver historial de compras");
+            System.out.println("3. Volver al menú principal");
+            System.out.print("Seleccione una opción: ");
+            String opcion = scanner.nextLine().trim();
+
+            switch (opcion) {
+                case "1" -> registrarCompra();
+                case "2" -> verHistorialDeCompras();
+                case "3" -> gestionando = false;
+                default -> System.out.println("Opción no válida.");
+            }
+        }
+    }
+
+    // -------------------- Funciones ya existentes --------------------
 
     private static void agregarCliente() {
         System.out.print("ID cliente: ");
@@ -133,15 +173,15 @@ public class Main {
     }
 
     private static void listarClientes() {
-    var lista = fidelidadService.listarClientes();
-    if (lista.isEmpty()) {
-        System.out.println("No hay clientes registrados.");
-    } else {
-        System.out.println("--- Clientes ---");
-        for (Cliente c : lista) {
-            System.out.println(c.getId() + " - " + c.getNombre() + " - " + c.getCorreo());
+        var lista = fidelidadService.listarClientes();
+        if (lista.isEmpty()) {
+            System.out.println("No hay clientes registrados.");
+        } else {
+            System.out.println("--- Clientes ---");
+            for (Cliente c : lista) {
+                System.out.println(c.getId() + " - " + c.getNombre() + " - " + c.getCorreo());
+            }
         }
-    }
     }
 
     private static void eliminarCliente() {
@@ -157,16 +197,16 @@ public class Main {
     }
 
     private static void verHistorialDeCompras() {
-    System.out.print("ID del cliente: ");
-    String id = scanner.nextLine().trim();
-    var historial = fidelidadService.obtenerHistorialCompras(id);
-    if (historial.isEmpty()) {
-        System.out.println("Este cliente no tiene compras registradas.");
-    } else {
-        System.out.println("--- Historial de Compras ---");
-        historial.forEach(compra -> System.out.println(
-            compra.getFecha() + " - $" + compra.getMonto() + " - ID: " + compra.getIdCompra()
-        ));
+        System.out.print("ID del cliente: ");
+        String id = scanner.nextLine().trim();
+        var historial = fidelidadService.obtenerHistorialCompras(id);
+        if (historial.isEmpty()) {
+            System.out.println("Este cliente no tiene compras registradas.");
+        } else {
+            System.out.println("--- Historial de Compras ---");
+            historial.forEach(compra -> System.out.println(
+                compra.getFecha() + " - $" + compra.getMonto() + " - ID: " + compra.getIdCompra()
+            ));
+        }
     }
-}
 }
